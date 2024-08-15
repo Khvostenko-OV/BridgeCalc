@@ -1,0 +1,9 @@
+version: '3'
+
+services:
+
+  backend:
+    container_name: bridge_bot
+    image: khvostenko/bridgecalc:latest
+    restart: always
+    command: bash -c "python main.py"

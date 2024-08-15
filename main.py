@@ -13,7 +13,7 @@ vul = False
 counter = 70
 
 points = {'c': 20, 'd': 20, 'h': 30, 's': 30, 'n': 30}
-suits = {'c': 'треф', 'd': 'бубен', 'h': 'черв', 's': 'пик', 'n': 'бк'}
+suits = {'c': '♣️', 'd': '♦️', 'h': '♥️', 's': '♠️', 'n': 'БК'}
 bonus = {1: '', 2: 'на контре', 4: 'на реконтре'}
 vulnerable = {False: 'до зоны', True: 'в зоне'}
 game = [300, 500]
@@ -155,10 +155,8 @@ def calculate(message):
             tr = '+'+str(tricks)
         else:
             tr = '=='
-        bot.send_message(
-            message.chat.id,
-            f'Контракт {level}{suits[suit]} {bonus[factor]} {vulnerable[vul]} {tr}, баланс {balance}рс, компенсация {compensa[vul][balance]}'
-        )
+        bot.send_message(message.chat.id, f'Контракт {level}{suits[suit]} {bonus[factor]} {vulnerable[vul]} {tr}: {counter}')
+        bot.send_message(message.chat.id, f'Баланс {balance}рс, компенсация: {compensa[vul][balance]}')
         bot.send_message(message.chat.id, f'Сумма: {final}. Импов: {imp}', reply_markup=menu_markup)
     else:
         bot.send_message(message.chat.id, 'Задайте баланс:')

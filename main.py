@@ -5,7 +5,6 @@ from telebot.types import InlineKeyboardButton as button
 from dotenv import load_dotenv
 
 load_dotenv(verbose=False, override=True)  # take environment variables from .env
-
 bot = telebot.TeleBot(os.getenv("BOT_TOKEN",""))
 
 POINTS = {'c': 20, 'd': 20, 'h': 30, 's': 30, 'n': 30}
@@ -36,36 +35,38 @@ IMP_TABLE = [0, 20, 50, 90, 130, 170, 220, 270, 320, 370, 430, 500, 600, 750, 90
 
 level = 1
 suit = 'c'
-factor = 1
-tricks = 0
-vul = False
+factor = 1 # doubled, redoubled
+tricks = 0 # over/under tricks
+vul = False # vulnerable
 counter = 70
 
+# Make contract
 def make(level, suit, factor, vul, tricks) -> int:
-    sum = POINTS[suit] * level
+    res = POINTS[suit] * level
     if suit == 'n':
-        sum += 10
-    sum *= factor
-    if sum >= 100:
-        sum += GAME[vul]
+        res += 10
+    res *= factor
+    if res >= 100:
+        res += GAME[vul]
     if level == 6:
-        sum += SLAM[vul]
+        res += SLAM[vul]
     if level == 7:
-        sum += GSLAM[vul]
-    if sum < 100:
-        sum += 50
+        res += GSLAM[vul]
+    if res < 100:
+        res += 50
     if factor == 2:
-        sum += 50
+        res += 50
     if factor == 4:
-        sum += 100
+        res += 100
     if factor == 1:
-        sum += tricks * POINTS[suit]
+        res += tricks * POINTS[suit]
     else:
-        sum += tricks * OVER_TRICK[vul] * factor
-    return sum
+        res += tricks * OVER_TRICK[vul] * factor
+    return res
 
 
-def down(factor, vul, tricks: int) -> int:
+# Down contract
+def down(factor, vul, tricks) -> int:
     if factor == 1:
         return tricks * OVER_TRICK[vul]
     else:
